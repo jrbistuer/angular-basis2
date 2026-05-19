@@ -4,12 +4,36 @@
 
     <h1>Contenido de Books</h1>
 
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas, cumque
-        voluptate. Doloribus, quisquam. Voluptas, cumque voluptate. Doloribus,
-        quisquam. Voluptas, cumque voluptate. Doloribus, quisquam. Voluptas, cumque
-        voluptate. Doloribus, quisquam. Voluptas, cumque voluptate. Doloribus,
-        quisquam. Voluptas, cumque voluptate. Doloribus, quisquam. Voluptas, cumque
-        voluptate. Doloribus, quisquam.
-    </p>
+    <h2>Nou llibre</h2>
+    <div>
+        <form [formGroup]="formBooks">
+            <div>
+                <label for="title">Títol</label>
+                <input id="title" formControlName="title">
+                @if (formBooks.get('title')!.invalid && formBooks.get('title')!.touched) {
+                    <div class="error">{{ formBooks.get('title')!.errors | json }}</div>
+                }
+            </div>
+            <div>
+                <label for="author">Autor</label>
+                <input id="author" formControlName="author">
+                @if (formBooks.get('author')!.invalid && formBooks.get('author')!.touched) {
+                    <div class="error">{{ formBooks.get('author')!.errors | json }}</div>
+                }
+            </div>
+        </form>
+        <button (click)="addBook()">Afegir llibre</button>
+    </div>
+
+
+    <h2>Llistat de llibres</h2>
+
+    @for (book of booksService.books; track $index) {
+        <div class="book">
+            <div><b>{{ book.title }}</b> -- {{ book.author }}</div>
+        </div>
+    }
+
+
 </div>
+

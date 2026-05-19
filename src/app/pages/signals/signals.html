@@ -1,0 +1,10 @@
+<app-header [title]="'Signals'"></app-header>
+
+<h1>Signal Example Counter</h1>
+
+<div class="counter">
+    <button (click)="decreaseCounter()">-</button>
+    <h1>{{ counter() }}</h1>
+    <h2>Double Value: {{ doubleValue() }}</h2>
+    <button (click)="increaseCounter()">+</button>
+</div>
