@@ -13,8 +13,13 @@ export class BooksService {
     this.books.set(storedBooks);
   }
 
+  getAllBooks() {
+    return JSON.parse(localStorage.getItem('books') || '[]') as IBook[];
+  }
+
   getBooks() {
-    return localStorage.getItem('books') ? JSON.parse(localStorage.getItem('books')!) : [];
+    const activeBooks = this.getAllBooks().filter(book => book.active);
+    return activeBooks.filter(book => book.active);
   }
 
   addBook(book: IBook) {
@@ -33,9 +38,9 @@ export class BooksService {
 
   deleteBook(bookId: number) {
     const currentBooks = this.books();
-    const updatedBooks = currentBooks.filter(book => book.id !== bookId);
-    this.books.set(updatedBooks);
+    const updatedBooks = currentBooks.map(book => book.id === bookId ? { ...book, active: false } : book);
     localStorage.setItem('books', JSON.stringify(updatedBooks));
+    this.books.set(this.getBooks());
   }
 
 }

@@ -7,7 +7,7 @@ export interface IUser {
 }
 
 export interface IBook {
-    id: number;
+    id?: number;
     title: string;
     author: string;
     publishedDate: number;
@@ -15,4 +15,5 @@ export interface IBook {
     pages: number;
     language: string;
     publisher: string;
+    active: boolean;
 }
