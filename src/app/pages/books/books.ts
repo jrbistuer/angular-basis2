@@ -27,16 +27,13 @@ export class Books {
     pages: ['']
   });
 
-  newBookTitle = '';
-  newBookAuthor = '';
-
   addBook() {
     console.log(this.formBooks);
     if (this.formBooks.valid) {
       const newBook: IBook = {
         id: this.booksService.books.length + 1,
-        title: this.newBookTitle,
-        author: this.newBookAuthor,
+        title: this.formBooks.get('title')!.value!,
+        author: this.formBooks.get('author')!.value!,
         publishedDate: new Date().getFullYear(),
         isbn: 'N/A',
         language: 'N/A',
@@ -44,6 +41,8 @@ export class Books {
         pages: 0,
       }
       console.log(newBook);
+      this.booksService.addBook(newBook);
+      this.formBooks.reset();
     }
   }
     

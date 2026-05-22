@@ -28,7 +28,7 @@
 
     <h2>Llistat de llibres</h2>
 
-    @for (book of booksService.books; track $index) {
+    @for (book of booksService.books(); track $index) {
         <div class="book">
             <div><b>{{ book.title }}</b> -- {{ book.author }}</div>
         </div>
