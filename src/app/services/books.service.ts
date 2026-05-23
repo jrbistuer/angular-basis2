@@ -9,38 +9,40 @@ export class BooksService {
   books = signal<IBook[]>([]);
 
   constructor() {
-    const storedBooks = this.getBooks();
-    this.books.set(storedBooks);
-  }
-
-  getAllBooks() {
-    return JSON.parse(localStorage.getItem('books') || '[]') as IBook[];
-  }
-
-  getBooks() {
-    const activeBooks = this.getAllBooks().filter(book => book.active);
-    return activeBooks.filter(book => book.active);
+    this.books.set(this.getFilteredBooks());
   }
 
   addBook(book: IBook) {
-    const currentBooks = this.books();
+    book.id = this.getAllBooks().length + 1;
+    const currentBooks = this.getAllBooks();
     const updatedBooks = [...currentBooks, book];
-    this.books.set(updatedBooks);
-    localStorage.setItem('books', JSON.stringify(updatedBooks));
+    this.setBooks(updatedBooks);
   }
 
   updateBook(updatedBook: IBook) {
-    const currentBooks = this.books();
+    const currentBooks = this.getAllBooks();
     const updatedBooks = currentBooks.map(book => book.id === updatedBook.id ? updatedBook : book);
-    this.books.set(updatedBooks);
-    localStorage.setItem('books', JSON.stringify(updatedBooks));
+    this.setBooks(updatedBooks);
   }
 
   deleteBook(bookId: number) {
-    const currentBooks = this.books();
+    const currentBooks = this.getAllBooks();
     const updatedBooks = currentBooks.map(book => book.id === bookId ? { ...book, active: false } : book);
-    localStorage.setItem('books', JSON.stringify(updatedBooks));
-    this.books.set(this.getBooks());
+    this.setBooks(updatedBooks);
   }
+
+  private getAllBooks() {
+    return JSON.parse(localStorage.getItem('books') || '[]') as IBook[];
+  }
+
+  private getFilteredBooks() {
+    const allbooks = JSON.parse(localStorage.getItem('books') || '[]') as IBook[];
+    return allbooks.filter(book => book.active);
+  }
+
+  private setBooks(books: IBook[]) {
+    localStorage.setItem('books', JSON.stringify(books));
+    this.books.set(books.filter(book => book.active));
+  };
 
 }

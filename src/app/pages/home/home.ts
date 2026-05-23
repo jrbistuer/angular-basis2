@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Header } from '../../shared/components/header/header';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-home',
-  imports: [Header],
+  imports: [Header, MatCardModule, MatButtonModule],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

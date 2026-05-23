@@ -31,7 +31,6 @@ export class Books {
     console.log(this.formBooks);
     if (this.formBooks.valid) {
       const newBook: IBook = {
-        id: this.booksService.getAllBooks().length + 1,
         title: this.formBooks.get('title')!.value!,
         author: this.formBooks.get('author')!.value!,
         publishedDate: new Date().getFullYear(),
