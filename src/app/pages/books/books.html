@@ -4,33 +4,22 @@
 
     <h1>Contenido de Books</h1>
 
-    <h2>Nou llibre</h2>
-    <div>
-        <form [formGroup]="formBooks">
-            <div>
-                <label for="title">Títol</label>
-                <input id="title" formControlName="title">
-                @if (formBooks.get('title')!.invalid && formBooks.get('title')!.touched) {
-                    <div class="error">{{ formBooks.get('title')!.errors | json }}</div>
-                }
-            </div>
-            <div>
-                <label for="author">Autor</label>
-                <input id="author" formControlName="author">
-                @if (formBooks.get('author')!.invalid && formBooks.get('author')!.touched) {
-                    <div class="error">{{ formBooks.get('author')!.errors | json }}</div>
-                }
-            </div>
-        </form>
-        <button (click)="addBook()">Afegir llibre</button>
-    </div>
-
+    <!-- [title] i [selectedBook]: Inputs passats al component fill per gestionar-se en el fill; selectedBook es el llibre seleccionat per editar -->
+    <!-- (onEnterButtonPressed) i (onActualitzarButtonPressed): Outputs emesos pel fill, capturats aquí i passats a les funcions d'aquí -->
+    <app-book-form [title]="'Nou llibre'"
+        [selectedBook]="selectedBook"
+        (onEnterButtonPressed)="addBook($event)"
+        (onActualitzarButtonPressed)="updateBook($event)"></app-book-form>
 
     <h2>Llistat de llibres</h2>
 
+    <!-- booksService.books() → invoca el signal (funció); @for es re-renderitza automàticament quan canvia -->
     @for (book of booksService.books(); track $index) {
         <div class="book">
-            <div><b>{{ book.title }}</b> -- {{ book.author }}   ----   <span (click)="booksService.deleteBook(book.id!)">Eliminar</span></div>
+            <div><b>{{ book.title }}</b> -- {{ book.author }}   
+                ----   <span (click)="booksService.deleteBook(book.id!)">Eliminar</span>
+                ----   <span (click)="editBook(book)">Editar</span>
+            </div>
         </div>
     }
 

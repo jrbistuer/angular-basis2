@@ -1,0 +1,22 @@
+<div>
+    <h2>{{title()}}</h2>
+
+    <form [formGroup]="formBooks">
+        <div>
+            <label for="title">Títol</label>
+            <input id="title" formControlName="title">
+            @if (formBooks.get('title')!.invalid && formBooks.get('title')!.touched) {
+                <div class="error">{{ formBooks.get('title')!.errors | json }}</div>
+            }
+        </div>
+        <div>
+            <label for="author">Autor</label>
+            <input id="author" formControlName="author">
+            @if (formBooks.get('author')!.invalid && formBooks.get('author')!.touched) {
+                <div class="error">{{ formBooks.get('author')!.errors | json }}</div>
+            }
+        </div>
+    </form>
+    <button (click)="addBook()">ENTER</button>
+    <button (click)="updateBook()">ACTUALITZAR</button>
+</div>

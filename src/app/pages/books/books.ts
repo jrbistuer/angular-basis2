@@ -4,46 +4,30 @@ import { BooksService } from '../../services/books.service';
 import { IBook } from '../../model/interfaces';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
+import { BookForm } from '../../shared/components/book-form/book-form';
 
 @Component({
   selector: 'app-books',
-  imports: [Header, FormsModule, ReactiveFormsModule, JsonPipe],
+  imports: [Header, FormsModule, ReactiveFormsModule, JsonPipe, BookForm],
   templateUrl: './books.html',
   styleUrl: './books.scss',
 })
 export class Books {
 
-  booksService = inject(BooksService);
+  booksService = inject(BooksService); // Servei injectat; comparteix el signal books amb tota l'app
 
-  formBuilder: FormBuilder = inject(FormBuilder);
-
-  formBooks = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.minLength(5)]],
-    author: ['', [Validators.required]],
-    publishedDate: [''],
-    isbn: [''],
-    language: [''],
-    publisher: [''],
-    pages: ['']
-  });
-
-  addBook() {
-    console.log(this.formBooks);
-    if (this.formBooks.valid) {
-      const newBook: IBook = {
-        title: this.formBooks.get('title')!.value!,
-        author: this.formBooks.get('author')!.value!,
-        publishedDate: new Date().getFullYear(),
-        isbn: 'N/A',
-        language: 'N/A',
-        publisher: 'N/A',
-        pages: 0,
-        active: true
-      }
-      console.log(newBook);
-      this.booksService.addBook(newBook);
-      this.formBooks.reset();
-    }
+  selectedBook: IBook | null = null; // EL book seleccionat per editar, i que es passa com a Input al BookForm
+  addBook(newBook: IBook) {
+    console.log('Book received in Books page:', newBook);
+    this.booksService.addBook(newBook);
   }
-    
+
+  editBook(book: IBook) {
+    this.selectedBook = book;
+  }
+
+  updateBook(updatedBook: IBook) {
+      this.booksService.updateBook(updatedBook);
+  }
+
 }

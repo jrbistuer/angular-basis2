@@ -2,15 +2,18 @@ import { Injectable, signal } from '@angular/core';
 import { IBook } from '../model/interfaces';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root', // Singleton: una sola instància compartida per tota l'app
 })
 export class BooksService {
 
+  // Signal: estat de les dades relacionades amb Book; els components que s'hi subscriuen es re-renderitzen automàticament
   books = signal<IBook[]>([]);
 
   constructor() {
-    this.books.set(this.getFilteredBooks());
+    this.books.set(this.getFilteredBooks()); // Inicialitza el signal amb les dades persistides al localStorage
   }
+  
+  // En aquest servei, la persistència es fa mitjançant localStorage, però podria ser una crida HTTP a un backend real
 
   addBook(book: IBook) {
     book.id = this.getAllBooks().length + 1;
@@ -42,7 +45,7 @@ export class BooksService {
 
   private setBooks(books: IBook[]) {
     localStorage.setItem('books', JSON.stringify(books));
-    this.books.set(books.filter(book => book.active));
+    this.books.set(books.filter(book => book.active)); // Actualitza el signal: tots els consumers es notifiquen
   };
 
 }
